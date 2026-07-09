@@ -1,4 +1,4 @@
-# Week 2 - Create a Spring Web Project using Maven
+# Week 3 - Create a Spring Web Project using Maven
 
 ## Objective
 
