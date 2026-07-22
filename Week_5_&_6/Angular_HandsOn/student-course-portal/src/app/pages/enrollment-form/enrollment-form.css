@@ -1,0 +1,29 @@
+.ng-invalid.ng-touched{
+
+border:2px solid red;
+
+}
+
+.ng-valid.ng-touched{
+
+border:2px solid green;
+
+}
+
+span{
+
+color:red;
+
+font-size:13px;
+
+}
+
+div{
+
+color:green;
+
+font-weight:bold;
+
+margin-top:15px;
+
+}
