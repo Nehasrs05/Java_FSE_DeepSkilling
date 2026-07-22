@@ -1,10 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { CreditLabelPipe } from '../../pipes/credit-label-pipe';
+import { HighlightDirective } from '../../directives/highlight';
 @Component({
   selector: 'app-course-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    CreditLabelPipe,
+    HighlightDirective
+  ],
   templateUrl: './course-card.html',
   styleUrl: './course-card.css'
 })
