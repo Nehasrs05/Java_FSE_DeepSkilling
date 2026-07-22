@@ -5,35 +5,23 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-enrollment-form',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './enrollment-form.html',
   styleUrl: './enrollment-form.css'
 })
 export class EnrollmentFormComponent {
 
   studentName = '';
-
   studentEmail = '';
-
-  courseId!: number;
-
+  courseId: number | null = null;
   preferredSemester = '';
-
   agreeToTerms = false;
 
   submitted = false;
 
   onSubmit(form: NgForm) {
-
     console.log(form.value);
-
     console.log(form.valid);
-
     this.submitted = true;
-
   }
-
 }

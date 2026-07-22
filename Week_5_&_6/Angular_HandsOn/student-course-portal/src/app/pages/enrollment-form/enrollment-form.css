@@ -1,29 +1,16 @@
-.ng-invalid.ng-touched{
-
-border:2px solid red;
-
+.ng-invalid.ng-touched {
+  border: 2px solid red;
 }
 
-.ng-valid.ng-touched{
-
-border:2px solid green;
-
+.ng-valid.ng-touched {
+  border: 2px solid green;
 }
 
-span{
-
-color:red;
-
-font-size:13px;
-
+span {
+  color: red;
+  font-size: 14px;
 }
 
-div{
-
-color:green;
-
-font-weight:bold;
-
-margin-top:15px;
-
+button {
+  margin-right: 10px;
 }
