@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-
+import { ReactiveEnrollmentFormComponent } from './pages/reactive-enrollment-form/reactive-enrollment-form';
 import { HomeComponent } from './pages/home/home';
 import { CourseListComponent } from './pages/course-list/course-list';
 import { StudentProfile } from './pages/student-profile/student-profile';
@@ -21,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'enroll',
     component: EnrollmentFormComponent
-  }
+  },
+  {
+    path: 'enroll-reactive',
+    component: ReactiveEnrollmentFormComponent
+}
 ];
