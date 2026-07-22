@@ -1,43 +1,51 @@
-import {
-Component,
-Input,
-Output,
-EventEmitter,
-OnChanges,
-SimpleChanges
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-course-card',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './course-card.html',
   styleUrl: './course-card.css'
 })
-export class CourseCardComponent implements OnChanges {
+export class CourseCardComponent {
 
   @Input()
-  course!: {
-    id:number,
-    name:string,
-    code:string,
-    credits:number
-  };
+  course!: any;
 
   @Output()
   enrollRequested = new EventEmitter<number>();
 
-  ngOnChanges(changes: SimpleChanges): void {
+  isExpanded = false;
 
-    console.log(
-      "Previous:",
-      changes['course']?.previousValue
-    );
+  enrolled = false;
 
-    console.log(
-      "Current:",
-      changes['course']?.currentValue
-    );
+  enroll() {
+
+    this.enrolled = true;
+
+    this.enrollRequested.emit(this.course.id);
+
+  }
+
+  toggleDetails() {
+
+    this.isExpanded = !this.isExpanded;
+
+  }
+
+  // Getter keeps template cleaner than writing the object inline
+  get cardClasses() {
+
+    return {
+
+      'card--enrolled': this.enrolled,
+
+      'card--full': this.course.credits >= 4,
+
+      'expanded': this.isExpanded
+
+    };
 
   }
 

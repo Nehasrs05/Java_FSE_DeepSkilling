@@ -1,17 +1,25 @@
-<app-course-card
+<p *ngIf="isLoading">
+    Loading courses...
+</p>
 
-*ngFor="let c of courses"
+<div *ngIf="!isLoading; else noCourses">
 
-[course]="c"
+    <app-course-card
+        *ngFor="let course of courses; trackBy: trackByCourseId"
+        [course]="course"
+        (enrollRequested)="onEnroll($event)">
+    </app-course-card>
 
-(enrollRequested)="onEnroll($event)">
+</div>
 
-</app-course-card>
+<ng-template #noCourses>
+
+    <p>No courses available.</p>
+
+</ng-template>
 
 <p *ngIf="selectedCourseId">
 
-Selected Course ID :
-
-{{selectedCourseId}}
+    Selected Course ID : {{ selectedCourseId }}
 
 </p>

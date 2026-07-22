@@ -1,14 +1,13 @@
-<h3>{{course.name}}</h3>
+<div
+appHighlight="lightblue"
+[ngClass]="cardClasses">
 
-<p>ID : {{course.id}}</p>
+<p>
 
-<p>Code : {{course.code}}</p>
+Credits :
 
-<p>Credits : {{course.credits}}</p>
+{{course.credits | creditLabel}}
 
-<button
-(click)="enrollRequested.emit(course.id)">
-Enroll
-</button>
+</p>
 
-<hr>
+</div>
