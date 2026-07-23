@@ -1,9 +1,42 @@
 <div
-appHighlight="lightblue"
-[ngClass]="cardClasses">
+  appHighlight="lightblue"
+  [ngClass]="cardClasses">
 
-<p>
-Credits: {{ course.credits | creditLabel }}
-</p>
+  <h3>{{ course.name }}</h3>
+
+  <p>Course ID: {{ course.id }}</p>
+
+  <p>Code: {{ course.code }}</p>
+
+  <p>Credits: {{ course.credits | creditLabel }}</p>
+
+  <p>
+    Status:
+    <span [ngSwitch]="course.gradeStatus">
+
+      <span *ngSwitchCase="'passed'">Passed</span>
+
+      <span *ngSwitchCase="'failed'">Failed</span>
+
+      <span *ngSwitchCase="'pending'">Pending</span>
+
+    </span>
+  </p>
+
+  <button
+    type="button"
+    (click)="enroll()">
+
+    Enroll
+
+  </button>
+
+  <button
+    type="button"
+    (click)="toggleDetails()">
+
+    {{ isExpanded ? 'Hide Details' : 'Show Details' }}
+
+  </button>
 
 </div>

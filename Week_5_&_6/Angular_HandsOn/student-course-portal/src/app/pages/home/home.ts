@@ -1,10 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+import { CourseService } from '../../services/course';
+import { CourseSummaryWidgetComponent } from '../../components/course-summary-widget/course-summary-widget';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FormsModule],
+  imports: [
+    FormsModule,
+    CourseSummaryWidgetComponent,
+    
+  ],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -18,25 +25,31 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   searchTerm = '';
 
+  coursesCount = 0;
+
   totalCourses = 0;
+
+  constructor(private courseService: CourseService) {}
 
   ngOnInit() {
 
-    this.totalCourses = 12;
+    this.coursesCount = this.courseService.getCourses().length;
 
-    console.log("HomeComponent initialised — courses loaded");
+    this.totalCourses = this.coursesCount;
+
+    console.log('HomeComponent initialised — courses loaded');
 
   }
 
   ngOnDestroy() {
 
-    console.log("HomeComponent destroyed");
+    console.log('HomeComponent destroyed');
 
   }
 
   onEnrollClick() {
 
-    this.message = "Enrollment opened!";
+    this.message = 'Enrollment opened!';
 
   }
 
