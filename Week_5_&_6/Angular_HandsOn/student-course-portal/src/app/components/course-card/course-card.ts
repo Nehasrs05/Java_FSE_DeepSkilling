@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CreditLabelPipe } from '../../pipes/credit-label-pipe';
 import { HighlightDirective } from '../../directives/highlight';
 import { EnrollmentService } from '../../services/enrollment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-card',
@@ -18,8 +19,14 @@ import { EnrollmentService } from '../../services/enrollment';
 export class CourseCardComponent {
 
   constructor(
-    private enrollmentService: EnrollmentService
-  ) {}
+  private enrollmentService: EnrollmentService,
+  private router: Router
+) {}
+goToDetails() {
+
+  this.router.navigate(['courses', this.course.id]);
+
+}
 
   @Input()
   course!: any;

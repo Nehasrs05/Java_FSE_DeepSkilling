@@ -1,14 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CourseCardComponent } from '../../components/course-card/course-card';
+import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
+import { CourseCardComponent } from '../../components/course-card/course-card';
 import { CourseService } from '../../services/course';
 import { Course } from '../../models/course.model';
 
 @Component({
   selector: 'app-course-list',
   standalone: true,
-  imports: [CommonModule, CourseCardComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CourseCardComponent
+  ],
   templateUrl: './course-list.html',
   styleUrl: './course-list.css'
 })
@@ -18,24 +24,52 @@ export class CourseListComponent implements OnInit {
 
   selectedCourseId = 0;
 
-courses: Course[] = [];
-constructor(private courseService: CourseService) {}
+  searchTerm = '';
 
-ngOnInit() {
+  courses: Course[] = [];
 
-  this.courses = this.courseService.getCourses();
+  constructor(
+    private courseService: CourseService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
-  this.isLoading = false;
+  ngOnInit() {
 
-}
-onEnroll(courseId: number) {
-    console.log("Enrolling in course: " + courseId);
-    this.selectedCourseId = courseId;
+    this.courses = this.courseService.getCourses();
+
+    this.searchTerm =
+      this.route.snapshot.queryParamMap.get('search') || '';
+
+    this.isLoading = false;
+
   }
 
-  // trackBy prevents Angular from recreating unchanged DOM elements
-  trackByCourseId(index: number, course: any) {
+  updateSearch() {
+
+    this.router.navigate(
+      ['courses'],
+      {
+        queryParams: {
+          search: this.searchTerm
+        }
+      }
+    );
+
+  }
+
+  onEnroll(courseId: number) {
+
+    console.log("Enrolling in course: " + courseId);
+
+    this.selectedCourseId = courseId;
+
+  }
+
+  trackByCourseId(index: number, course: Course) {
+
     return course.id;
+
   }
 
 }

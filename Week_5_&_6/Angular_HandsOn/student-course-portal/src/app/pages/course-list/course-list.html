@@ -1,3 +1,11 @@
+<input
+  type="text"
+  [(ngModel)]="searchTerm"
+  (input)="updateSearch()"
+  placeholder="Search course">
+
+<p>Searching for: {{ searchTerm }}</p>
+
 <p *ngIf="isLoading">
   Loading courses...
 </p>
@@ -17,9 +25,13 @@
 </div>
 
 <ng-template #noCourses>
+
   <p>No courses available.</p>
+
 </ng-template>
 
 <p *ngIf="selectedCourseId">
+
   Selected Course ID: {{ selectedCourseId }}
+
 </p>
