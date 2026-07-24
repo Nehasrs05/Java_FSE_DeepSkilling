@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { CourseCardComponent } from '../../components/course-card/course-card';
 import { CourseService } from '../../services/course';
@@ -21,52 +21,59 @@ import { Course } from '../../models/course.model';
 export class CourseListComponent implements OnInit {
 
   isLoading = true;
-
+  errorMessage = '';
   selectedCourseId = 0;
-
   searchTerm = '';
 
   courses: Course[] = [];
+  filteredCourses: Course[] = [];
 
   constructor(
     private courseService: CourseService,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
 
-    this.courses = this.courseService.getCourses();
+    this.courseService.getCourses().subscribe({
 
-    this.searchTerm =
-      this.route.snapshot.queryParamMap.get('search') || '';
+      next: (courses) => {
 
-    this.isLoading = false;
+        this.courses = courses;
+        this.filteredCourses = courses;
+        this.isLoading = false;
+
+      },
+
+      error: (err) => {
+
+        this.errorMessage = err.message;
+        this.isLoading = false;
+
+      }
+
+    });
 
   }
 
-  updateSearch() {
+  updateSearch(): void {
 
-    this.router.navigate(
-      ['courses'],
-      {
-        queryParams: {
-          search: this.searchTerm
-        }
-      }
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredCourses = this.courses.filter(course =>
+      course.name.toLowerCase().includes(term) ||
+      course.code.toLowerCase().includes(term)
     );
 
   }
 
-  onEnroll(courseId: number) {
-
-    console.log("Enrolling in course: " + courseId);
+  onEnroll(courseId: number): void {
 
     this.selectedCourseId = courseId;
 
   }
 
-  trackByCourseId(index: number, course: Course) {
+  trackByCourseId(index: number, course: Course): number {
 
     return course.id;
 

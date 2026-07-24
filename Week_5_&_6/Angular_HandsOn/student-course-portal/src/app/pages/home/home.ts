@@ -9,8 +9,7 @@ import { CourseSummaryWidgetComponent } from '../../components/course-summary-wi
   standalone: true,
   imports: [
     FormsModule,
-    CourseSummaryWidgetComponent,
-    
+    CourseSummaryWidgetComponent
   ],
   templateUrl: './home.html',
   styleUrl: './home.css'
@@ -33,9 +32,22 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.coursesCount = this.courseService.getCourses().length;
+    this.courseService.getCourses().subscribe({
 
-    this.totalCourses = this.coursesCount;
+      next: (courses) => {
+
+        this.coursesCount = courses.length;
+        this.totalCourses = courses.length;
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+      }
+
+    });
 
     console.log('HomeComponent initialised — courses loaded');
 

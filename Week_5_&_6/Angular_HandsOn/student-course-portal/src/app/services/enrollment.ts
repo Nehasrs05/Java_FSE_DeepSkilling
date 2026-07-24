@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Course } from '../models/course.model';
 import { CourseService } from './course';
 
+import { Observable, forkJoin } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +16,9 @@ export class EnrollmentService {
   enroll(courseId: number): void {
 
     if (!this.enrolledCourseIds.includes(courseId)) {
+
       this.enrolledCourseIds.push(courseId);
+
     }
 
   }
@@ -32,11 +36,15 @@ export class EnrollmentService {
 
   }
 
-  getEnrolledCourses(): Course[] {
+  getEnrolledCourses(): Observable<Course[]> {
 
-    return this.enrolledCourseIds
-      .map(id => this.courseService.getCourseById(id))
-      .filter(course => course !== undefined) as Course[];
+    return forkJoin(
+
+      this.enrolledCourseIds.map(id =>
+        this.courseService.getCourseById(id)
+      )
+
+    );
 
   }
 

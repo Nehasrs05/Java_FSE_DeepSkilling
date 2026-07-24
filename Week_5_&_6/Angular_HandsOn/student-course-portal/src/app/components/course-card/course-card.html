@@ -24,20 +24,20 @@
     </span>
   </p>
 
-  <button
-    type="button"
-    (click)="enroll()">
+ <button
+  type="button"
+  (click)="$event.stopPropagation(); enroll()">
 
-    Enroll
+  Enroll
 
-  </button>
+</button>
 
-  <button
-    type="button"
-    (click)="toggleDetails()">
+<button
+  type="button"
+  (click)="$event.stopPropagation(); toggleDetails()">
 
-    {{ isExpanded ? 'Hide Details' : 'Show Details' }}
+  {{ isExpanded ? 'Hide Details' : 'Show Details' }}
 
-  </button>
+</button>
 
 </div>

@@ -1,59 +1,41 @@
 import { Injectable } from '@angular/core';
 import { Course } from '../models/course.model';
 
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class CourseService {
+constructor(private http: HttpClient) {}
+  
 
-  private courses: Course[] = [
-    {
-      id: 1,
-      name: 'Java Programming',
-      code: 'CS101',
-      credits: 4,
-      gradeStatus: 'passed'
-    },
-    {
-      id: 2,
-      name: 'Database Systems',
-      code: 'CS102',
-      credits: 3,
-      gradeStatus: 'pending'
-    },
-    {
-      id: 3,
-      name: 'Operating Systems',
-      code: 'CS103',
-      credits: 4,
-      gradeStatus: 'failed'
-    },
-    {
-      id: 4,
-      name: 'Computer Networks',
-      code: 'CS104',
-      credits: 3,
-      gradeStatus: 'passed'
-    },
-    {
-      id: 5,
-      name: 'Angular',
-      code: 'CS105',
-      credits: 2,
-      gradeStatus: 'pending'
-    }
-  ];
+  getCourses(): Observable<Course[]> {
 
-  getCourses(): Course[] {
-    return this.courses;
-  }
+  return this.http.get<Course[]>(
+    'http://localhost:3000/courses'
+  );
 
-  getCourseById(id: number): Course | undefined {
-    return this.courses.find(course => course.id === id);
-  }
+}
 
-  addCourse(course: Course): void {
-    this.courses.push(course);
-  }
+  getCourseById(id: number): Observable<Course> {
+
+  return this.http.get<Course>(
+    `http://localhost:3000/courses/${id}`
+  );
+
+}
+
+  createCourse(
+  course: Omit<Course, 'id'>
+): Observable<Course> {
+
+  return this.http.post<Course>(
+    'http://localhost:3000/courses',
+    course
+  );
+
+}
 
 }
