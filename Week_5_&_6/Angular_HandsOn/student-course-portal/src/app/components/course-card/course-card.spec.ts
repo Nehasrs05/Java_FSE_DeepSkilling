@@ -1,22 +1,69 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { Router } from '@angular/router';
 
-import { CourseCard } from './course-card';
+import { CourseCardComponent } from './course-card';
+import { EnrollmentService } from '../../services/enrollment';
 
-describe('CourseCard', () => {
-  let component: CourseCard;
-  let fixture: ComponentFixture<CourseCard>;
+describe('CourseCardComponent', () => {
+
+  let component: CourseCardComponent;
+  let fixture: ComponentFixture<CourseCardComponent>;
 
   beforeEach(async () => {
+
     await TestBed.configureTestingModule({
-      imports: [CourseCard],
+      imports: [CourseCardComponent],
+      providers: [
+        {
+          provide: EnrollmentService,
+          useValue: {
+            enroll: () => {},
+            unenroll: () => {},
+            isEnrolled: () => false
+          }
+        },
+        {
+          provide: Router,
+          useValue: {
+            navigate: () => {}
+          }
+        }
+      ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CourseCard);
+    fixture = TestBed.createComponent(CourseCardComponent);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+
+    component.course = {
+      id: 1,
+      name: 'Java',
+      code: 'CS101',
+      credits: 4,
+      gradeStatus: 'passed'
+    };
+
+    fixture.detectChanges();
+
   });
 
   it('should create', () => {
+
     expect(component).toBeTruthy();
+
   });
+
+  it('should receive input course', () => {
+
+    expect(component.course.name).toBe('Java');
+
+  });
+
+  it('should toggle details', () => {
+
+    component.toggleDetails();
+
+    expect(component.isExpanded).toBe(true);
+
+  });
+
 });
