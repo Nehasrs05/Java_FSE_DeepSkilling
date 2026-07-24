@@ -3,9 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { CourseCardComponent } from '../../components/course-card/course-card';
-import { CourseService } from '../../services/course';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+
 import { Course } from '../../models/course.model';
+import { CourseCardComponent } from '../../components/course-card/course-card';
+
+import * as CourseActions from '../../store/course/course.actions';
+import { selectAllCourses } from '../../store/course/course.selectors';
 
 @Component({
   selector: 'app-course-list',
@@ -20,54 +25,41 @@ import { Course } from '../../models/course.model';
 })
 export class CourseListComponent implements OnInit {
 
-  isLoading = true;
-  errorMessage = '';
+  courses$!: Observable<Course[]>;
+
   selectedCourseId = 0;
+
   searchTerm = '';
 
-  courses: Course[] = [];
-  filteredCourses: Course[] = [];
-
   constructor(
-    private courseService: CourseService,
+    private store: Store,
     private router: Router
   ) {}
 
   ngOnInit(): void {
 
-    this.courseService.getCourses().subscribe({
+    this.courses$ = this.store.select(selectAllCourses);
 
-      next: (courses) => {
-
-        this.courses = courses;
-        this.filteredCourses = courses;
-        this.isLoading = false;
-
-      },
-
-      error: (err) => {
-
-        this.errorMessage = err.message;
-        this.isLoading = false;
-
-      }
-
-    });
+    this.store.dispatch(CourseActions.loadCourses());
 
   }
 
   updateSearch(): void {
 
-    const term = this.searchTerm.toLowerCase().trim();
-
-    this.filteredCourses = this.courses.filter(course =>
-      course.name.toLowerCase().includes(term) ||
-      course.code.toLowerCase().includes(term)
+    this.router.navigate(
+      ['courses'],
+      {
+        queryParams: {
+          search: this.searchTerm
+        }
+      }
     );
 
   }
 
   onEnroll(courseId: number): void {
+
+    console.log('Enrolling in Course:', courseId);
 
     this.selectedCourseId = courseId;
 

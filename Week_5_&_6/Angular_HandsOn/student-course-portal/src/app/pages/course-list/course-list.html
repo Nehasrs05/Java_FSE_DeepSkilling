@@ -1,7 +1,3 @@
-<p *ngIf="errorMessage" style="color:red">
-  {{ errorMessage }}
-</p>
-
 <input
   type="text"
   [(ngModel)]="searchTerm"
@@ -10,32 +6,12 @@
 
 <p>Searching for: {{ searchTerm }}</p>
 
-<p *ngIf="isLoading">
-  Loading courses...
-</p>
-
-<div *ngIf="!isLoading">
-
-  <ng-container *ngIf="filteredCourses.length > 0; else noCourses">
-
-    <app-course-card
-      *ngFor="let course of filteredCourses; trackBy: trackByCourseId"
-      [course]="course"
-      (enrollRequested)="onEnroll($event)">
-    </app-course-card>
-
-  </ng-container>
-
-</div>
-
-<ng-template #noCourses>
-
-  <p>No courses available.</p>
-
-</ng-template>
+<app-course-card
+  *ngFor="let course of (courses$ | async); trackBy: trackByCourseId"
+  [course]="course"
+  (enrollRequested)="onEnroll($event)">
+</app-course-card>
 
 <p *ngIf="selectedCourseId">
-
   Selected Course ID: {{ selectedCourseId }}
-
 </p>
